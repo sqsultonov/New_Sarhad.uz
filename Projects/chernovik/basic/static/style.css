@@ -981,7 +981,7 @@ img {
       position: absolute;
       width: 100%;
       left: 0;
-      font-size: 18px; /* SHRIFT HAJMI - SHU YERDAN O'ZGARTIRASIZ */
+      font-size: 18px; /* Barcha sahifalardagi categorylar shrift razmeri */
       font-weight: 700;
       line-height: 45px;
       text-transform: uppercase;
@@ -1552,7 +1552,7 @@ img {
 }
 
 .header-search-form form input:focus {
-    border-color: #ef1b48; /* Newsbox qizil rangi */
+    border-color: #ef1b48; 
 }
 
 .header-search-form form button {
@@ -1576,7 +1576,7 @@ img {
 /* Mobil rejimda qidiruvni yashirish yoki moslashtirish */
 @media only screen and (max-width: 767px) {
     .header-search-form {
-        display: none; /* Mobil telefonda joy yetmagani uchun yashiramiz */
+        display: none; /* Mobil telefonda joy yetmagani uchun yashirish */
     }
 }
 /* ====== The End ====== */
