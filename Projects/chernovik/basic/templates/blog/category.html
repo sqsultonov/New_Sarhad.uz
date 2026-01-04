@@ -1,0 +1,225 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+ <!-- ##### Breaking News Area Start ##### -->
+    <section class="breaking-news-area clearfix">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breaking-news-ticker d-flex flex-wrap align-items-center">
+                        <div class="title">
+                            <h6>Ommabop</h6>
+                        </div>
+                        <div id="breakingNewsTicker" class="ticker">
+                            <ul>{% for post in posts|slice:":5" %}<li><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></li>{% empty %}<li><a href="#">Hozircha yangiliklar yo'q</a></li>{% endfor %}</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+       <!-- ##### Catagory Featured Area Start ##### -->
+    {% with first_post=posts.0 %}
+    <div class="catagory-featured-post bg-overlay clearfix"
+         style="background-image: url({% if first_post %}{{ first_post.image.url }}{% else %}{% static 'img/bg-img/23.jpg' %}{% endif %}); min-height: 500px; display: flex; align-items: flex-end; padding-bottom: 40px; position: relative;">
+
+        <!-- 1. Rukn nomi (Tag) - Endi u sarlavhaga bog'liq emas, bannerning yuqori qismiga 'mixlangan' -->
+        <p class="tag" style="position: absolute; top: 40px; left: 4%; z-index: 20; margin: 0;">
+            <span>{{ category.name }}</span>
+        </p>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <div class="post-content">
+                       {% if first_post %}
+                              <a href="{% url 'single-post' first_post.slug %}" class="post-title" style="font-size: 42px !important; line-height: 1.2; margin-bottom: 10px; display: block; color: #ffffff;">{{ first_post.title|truncatewords:4 }}</a>
+                            <p style="color: #ffffff; margin-bottom: 15px;">{{ first_post.content|truncatewords:35 }}</p>
+                            <span class="post-date" style="color: #ffffff;">{{ first_post.created_at|date:"F d, Y" }}</span>
+                        {% else %}
+                            <h2 class="text-white">Ushbu ruknda hozircha yangiliklar yo'q.</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+ <!-- ##### Catagory Featured Area end ##### -->
+
+    <!-- ##### Intro News Area Start ##### -->
+    <section class="intro-news-area section-padding-100-0 mb-70">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="intro-news-tab">
+                        <div class="intro-news-filter d-flex justify-content-between">
+                            <h6>Barcha yangiliklar</h6>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav1" data-toggle="tab" href="#nav-1" role="tab" aria-controls="nav-1" aria-selected="true">Eng so'nggi yangiliklar</a>
+                                    <a class="nav-item nav-link" id="nav2" data-toggle="tab" href="#nav-2" role="tab" aria-controls="nav-2" aria-selected="false">Mashhur</a>
+                                    <a class="nav-item nav-link" id="nav3" data-toggle="tab" href="#nav-3" role="tab" aria-controls="nav-3" aria-selected="false">Dunyo</a>
+                                    <a class="nav-item nav-link" id="nav4" data-toggle="tab" href="#nav-4" role="tab" aria-controls="nav-4" aria-selected="false">Mahalliy</a>
+                                </div>
+                            </nav>
+                        </div>
+
+                        <div class="tab-content" id="nav-tabContent">
+                            <!-- LATEST TAB -->
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav1">
+                                <div class="row">
+                                    {% if posts %}
+                                        {% with big_post=posts.0 %}
+                                        <div class="col-12">
+                                            <div class="single-blog-post style-2 mb-5">
+                                                <div class="blog-thumbnail">
+                                                    <a href="{% url 'single-post' big_post.slug %}"><img src="{{ big_post.image.url }}" alt=""></a>
+                                                </div>
+                                                <div class="blog-content">
+                                                    <span class="post-date">{{ big_post.created_at|date:"F d, Y" }}</span>
+                                                    <a href="{% url 'single-post' big_post.slug %}" class="post-title">{{ big_post.title|truncatewords:4 }}</a>
+                                                    <a href="#" class="post-author mb-30">By {{ big_post.author }}</a>
+                                                    <p>{{ big_post.content|truncatewords:40 }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endwith %}
+                                        {% for post in posts|slice:"1:5" %}
+                                        <div class="col-12 col-sm-6">
+                                            <div class="single-blog-post style-2 mb-5">
+                                                <div class="blog-thumbnail">
+                                                    <a href="{% url 'single-post' post.slug %}"><img src="{{ post.image.url }}" style="height: 200px; width: 100%; object-fit: cover;" alt=""></a>
+                                                </div>
+                                                <div class="blog-content">
+                                                    <span class="post-date">{{ post.created_at|date:"F d, Y" }}</span>
+                                                    <a href="{% url 'single-post' post.slug %}" class="post-title">{{ post.title|truncatewords:4 }}</a>
+                                                    <a href="#" class="post-author">By {{ post.author }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- POPULAR TAB -->
+                            <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav2">
+                                <div class="row">
+                                    {% if popular_posts %}
+                                        {% for p_post in popular_posts %}
+                                        <div class="col-12 {% if forloop.first %}col-lg-12{% else %}col-sm-6{% endif %}">
+                                            <div class="single-blog-post style-2 mb-5">
+                                                <div class="blog-thumbnail">
+                                                    <a href="{% url 'single-post' p_post.slug %}">
+                                                        <img src="{{ p_post.image.url }}" style="height: {% if forloop.first %}350px{% else %}200px{% endif %}; width: 100%; object-fit: cover;" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="blog-content">
+                                                    <span class="post-date">{{ p_post.created_at|date:"F d, Y" }} — <i class="fa fa-eye"></i> {{ p_post.views }}</span>
+                                                    <a href="{% url 'single-post' p_post.slug %}" class="post-title">{{ p_post.title|truncatewords:4 }}</a>
+                                                    <a href="#" class="post-author">By {{ p_post.author }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="col-12"><p>Mashhur maqolalar topilmadi.</p></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- INTERNATIONAL & LOCAL (Static for now) -->
+                            {% for tab_id in "34" %}
+                            <div class="tab-pane fade" id="nav-{{ tab_id }}" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12"><p>Ushbu bo'lim uchun filtrlar reja asosida keyinroq qo'shiladi.</p></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Widget -->
+                <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                    <div class="sidebar-area">
+                        <div class="single-widget-area newsletter-widget mb-30">
+                            <h4>Bizga obuna bo'ling</h4>
+                            <form action="#" method="post">
+                                {% csrf_token %}
+                                <input type="email" name="nl-email" id="nlemail" placeholder="Sizning E-mail">
+                                <button type="submit" class="btn newsbox-btn w-100">Obuna</button>
+                            </form>
+                            <p class="mt-30">Eng so'nggi yangiliklardan xabardor bo'lish uchun obuna bo'ling.</p>
+                        </div>
+                        <div class="single-widget-area add-widget mb-30">
+                            <a href="#"><img src="{% static 'img/bg-img/add3.png' %}" alt=""></a>
+                        </div>
+                        <div class="single-widget-area news-widget mb-30">
+                            <h4>Eng so'nggi yangiliklar</h4>
+                            {% for post in posts|slice:":5" %}
+                            <div class="single-blog-post d-flex style-4 mb-30">
+                                <div class="blog-thumbnail">
+                                    <a href="{% url 'single-post' post.slug %}">
+                                        <img src="{{ post.image.url }}" style="height: 90px; width: 90px; object-fit: cover;" alt="">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <span class="post-date">{{ post.created_at|date:"M d, Y" }}</span>
+                                    <a href="{% url 'single-post' post.slug %}" class="post-title">{{ post.title|truncatewords:4 }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="big-add-area">
+        <div class="container-fluid">
+            <a href="#"><img src="{% static 'img/bg-img/add4.png'%}" alt=""></a>
+        </div>
+    </div>
+
+    <!-- ##### News Area Start (3x3 Format + Load More) ##### -->
+    <div class="news-area section-padding-100-70">
+        <div class="container">
+            <div class="row">
+                {% if posts %}
+                    {% for post in posts %}
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="single-blog-post style-2 mb-5">
+                            <div class="blog-thumbnail">
+                                <a href="{% url 'single-post' post.slug %}">
+                                    <img src="{{ post.image.url }}" style="height: 200px; width: 100%; object-fit: cover;" alt="">
+                                </a>
+                            </div>
+                            <div class="blog-content">
+                                <span class="post-date">{{ post.created_at|date:"F d, Y" }}</span>
+                                <a href="{% url 'single-post' post.slug %}" class="post-title">{{ post.title|truncatewords:4 }}</a>
+                                <a href="#" class="post-author">By {{ post.author }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% if posts.has_next %}
+                    <div class="col-12">
+                        <div class="load-more-button text-center mt-50">
+                            <a href="?page={{ posts.next_page_number }}" class="btn newsbox-btn">Ko'proq</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-12 text-center"><p>Hozircha qo'shimcha yangiliklar yo'q.</p></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}

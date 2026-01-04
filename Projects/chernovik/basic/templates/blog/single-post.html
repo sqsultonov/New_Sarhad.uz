@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <!-- ##### Post Details Title Area Start ##### -->
+    <div class="post-details-title-area bg-overlay clearfix" id="video-hero-section"
+         style="background-image: url({% if post.image %}{{ post.image.url }}{% else %}{% static 'img/bg-img/23.jpg' %}{% endif %}); position: relative; overflow: hidden; display: flex; align-items: flex-end;">
+
+        <!-- 1. Haqiqiy Video (Dastlab yashirilgan va rasm bilan bir xil hajmda) -->
+        {% if post.is_video and post.video_file %}
+            <video id="post-main-video" style="display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 5;" controls>
+                <source src="{{ post.video_file.url }}" type="video/mp4">
+            </video>
+
+            <!-- 2. Play tugmasi (Rasm markazida) -->
+            <div id="play-video-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 15; cursor: pointer; background-color: #ef1b48; width: 80px; height: 80px; border-radius: 50%; text-align: center; line-height: 80px; color: white; font-size: 30px; transition: 0.3s; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+                <i class="fa fa-play"></i>
+            </div>
+        {% endif %}
+
+        <div class="container-fluid" style="position: relative; z-index: 10; padding-bottom: 30px;" id="post-ui-layer">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <!-- Post Content (Tag va Sarlavha) -->
+                    <div class="post-content">
+                        <p class="tag"><span>{{ post.category.name }}</span></p>
+                        <p class="post-title">{{ post.title }}</p>
+                        <div class="d-flex align-items-center">
+                            <span class="post-date mr-30">{{ post.created_at|date:"F d, Y" }}</span>
+                            <span class="post-date">By {{ post.author.username|default:"Admin" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Post Details Title Area End ##### -->
+
+    <!-- ##### Post Details Area Start ##### -->
+    <section class="post-news-area section-padding-100-0 mb-70">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- CHAP TOMON: Matn va Izohlar -->
+                <div class="col-12 col-lg-8">
+                    <div class="post-details-content mb-100">
+                        {{ post.content|linebreaks }}
+                    </div>
+
+                    <!-- Comment Area -->
+                    <div class="comment_area clearfix mb-100">
+                        <h4 class="mb-50">{{ comments.count }} Izohlar</h4>
+                        {% for comment in comments %}
+                            <div class="single_comment_area mb-30" style="padding: 20px; background: #f8f9fa; border-radius: 5px;">
+                                <p class="mb-1"><strong>{{ comment.name }}</strong> <small class="text-muted">{{ comment.created_at|date:"M d, Y" }}</small></p>
+                                <p>{{ comment.message }}</p>
+                            </div>
+                        {% empty %}
+                            <p>Hozircha izohlar yo'q.</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Fikr qoldirish formasi -->
+                    <div class="post-a-comment-area mb-30 clearfix">
+                        <h4 class="mb-50">Izoh qoldiring</h4>
+                        <div class="contact-form-area">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12 col-lg-6"><input type="text" name="name" class="form-control" placeholder="Ism*" required></div>
+                                    <div class="col-12 col-lg-6"><input type="email" name="email" class="form-control" placeholder="Email*" required></div>
+                                    <div class="col-12"><textarea name="message" class="form-control" cols="30" rows="10" placeholder="Xabar" required></textarea></div>
+                                    <div class="col-12"><button class="btn newsbox-btn mt-30" type="submit">Izoh yuborish</button></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- O'NG TOMON: Sidebar -->
+                <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                    <div class="sidebar-area">
+                        <!-- O'xshash yangiliklar -->
+                        <div class="single-widget-area news-widget mb-30">
+                            <h4>O'xshash yangiliklar</h4>
+                            {% for r_post in related_posts %}
+                            <div class="single-blog-post d-flex style-4 mb-30">
+                                <div class="blog-thumbnail">
+                                    <a href="{% url 'single-post' r_post.slug %}">
+                                        <img src="{% if r_post.image %}{{ r_post.image.url }}{% else %}{% static 'img/bg-img/23.jpg' %}{% endif %}" style="height: 90px; width: 90px; object-fit: cover;" alt="">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <a href="{% url 'single-post' r_post.slug %}" class="post-title">{{ r_post.title|truncatewords:4 }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Mashhur yangiliklar -->
+                        <div class="single-widget-area news-widget mb-30">
+                            <h4>Eng ko'p o'qilgan</h4>
+                            {% for p_post in popular_posts %}
+                            <div class="single-blog-post style-2 mb-5">
+                                <div class="blog-thumbnail">
+                                    <a href="{% url 'single-post' p_post.slug %}">
+                                        <img src="{% if p_post.image %}{{ p_post.image.url }}{% else %}{% static 'img/bg-img/23.jpg' %}{% endif %}" style="height: 180px; width: 100%; object-fit: cover;" alt="">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <span class="post-date">{{ p_post.created_at|date:"M d, Y" }}</span>
+                                    <a href="{% url 'single-post' p_post.slug %}" class="post-title">{{ p_post.title|truncatewords:4 }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO JAVASCRIPT LOGIKASI -->
+    <script>
+        const playBtn = document.getElementById('play-video-trigger');
+        const video = document.getElementById('post-main-video');
+        const uiLayer = document.getElementById('post-ui-layer');
+        const heroSection = document.getElementById('video-hero-section');
+
+        if(playBtn) {
+            playBtn.onclick = function() {
+                video.style.display = 'block';
+                video.play();
+                playBtn.style.display = 'none'; // Tugmani yashirish
+                uiLayer.style.display = 'none'; // Rukn nomi va sarlavhani yashirish
+                heroSection.classList.remove('bg-overlay'); // Qoralikni olib tashlash
+            };
+        }
+
+        // Scroll qilinganda videoni to'xtatish va qaytarish
+        window.onscroll = function() {
+            if (video && !video.paused) {
+                const rect = heroSection.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                    video.pause();
+                    video.currentTime = 0;
+                    video.style.display = 'none';
+                    uiLayer.style.display = 'block';
+                    playBtn.style.display = 'block';
+                    heroSection.classList.add('bg-overlay');
+                }
+            }
+        };
+    </script>
+</body>
+{% endblock content %}

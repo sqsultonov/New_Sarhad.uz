@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title -->
+    <title>Sarhad.Uz</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/core-img/logo.png' %}">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+        <div class="newsbox-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container-fluid">
+                    <nav class="classy-navbar justify-content-between" id="newsboxNav">
+
+                        <!-- Nav brand -->
+                        <a href="/" class="nav-brand">
+                            <img src="{% static 'img/core-img/logo.png' %}" style="max-height: 100px !important; width: auto !important; max-width: none !important;" alt="Logo">
+                        </a>
+
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+
+                        <div class="classy-menu">
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <div class="classynav">
+                                <ul>
+                                    {% for i in ctg %}
+                                        <li><a href="{% url 'category' i.slug %}">{{ i.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="header-search-form ml-30">
+                                    <form action="{% url 'search' %}" method="get">
+                                        <input type="search" name="search" id="search" placeholder="Qidirish...">
+                                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer-area">
+        <div class="footer-logo mb-100">
+            <a href="/"><img src="{% static 'img/core-img/logo.png' %}" style="max-height: 80px; width: auto;" alt="Footer Logo"></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer-content text-center">
+                        <div class="footer-nav">
+                            <ul>
+                                <li><a href="#">Biz bilan aloqa</a></li>
+                                <li><a href="#">Reklama</a></li>
+                                <li><a href="#">Maxfiylik siyosati</a></li>
+                                <li><a href="#">Sayt xaritasi </a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-social-info">
+                                <!-- O'z manzillaringizni qo'shing -->
+                                <a href="https://t.me/SARHAD_UZ" target="_blank"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                <a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                <a href="https://www.instagram.com/sarhadofical/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                <a href="https://youtube.com/@sarhad_24" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                            </div>
+
+                        <p class="mb-15">Sardorbek Sultonov.</p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ##### All Javascript Script ##### -->
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/plugins.js' %}"></script>
+    <script src="{% static 'js/active.js' %}"></script>
+</body>
+</html>
+
