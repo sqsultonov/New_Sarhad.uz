@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <body>
- <!-- ##### Breaking News Area Start ##### -->
+ <!-- ##### Tezkor yangiliklar maydoni boshlanishi ##### -->
     <section class="breaking-news-area clearfix">
         <div class="container-fluid">
             <div class="row">
@@ -20,12 +20,12 @@
         </div>
     </section>
 
-       <!-- ##### Catagory Featured Area Start ##### -->
+       <!-- ##### Kategoriyalar maydoni Start ##### -->
     {% with first_post=posts.0 %}
     <div class="catagory-featured-post bg-overlay clearfix"
          style="background-image: url({% if first_post %}{{ first_post.image.url }}{% else %}{% static 'img/bg-img/23.jpg' %}{% endif %}); min-height: 500px; display: flex; align-items: flex-end; padding-bottom: 40px; position: relative;">
 
-        <!-- 1. Rukn nomi (Tag) - Endi u sarlavhaga bog'liq emas, bannerning yuqori qismiga 'mixlangan' -->
+        <!-- 1. Rukn nomi va ramkasi (Tag) bannerning yuqori qismiga qadaldi' -->
         <p class="tag" style="position: absolute; top: 40px; left: 4%; z-index: 20; margin: 0;">
             <span>{{ category.name }}</span>
         </p>
@@ -47,9 +47,9 @@
         </div>
     </div>
     {% endwith %}
- <!-- ##### Catagory Featured Area end ##### -->
+ <!-- ##### kategoriyalar maydoni end ##### -->
 
-    <!-- ##### Intro News Area Start ##### -->
+    <!-- ##### Kiruvchi yangiliklar maydoni Start ##### -->
     <section class="intro-news-area section-padding-100-0 mb-70">
         <div class="container">
             <div class="row justify-content-center">
@@ -68,7 +68,7 @@
                         </div>
 
                         <div class="tab-content" id="nav-tabContent">
-                            <!-- LATEST TAB -->
+                            <!-- eng so'nggi yangiliklar TAB -->
                             <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav1">
                                 <div class="row">
                                     {% if posts %}
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
 
-                            <!-- POPULAR TAB -->
+                            <!-- mashhur maqolalar TAB -->
                             <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav2">
                                 <div class="row">
                                     {% if popular_posts %}
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
 
-                            <!-- INTERNATIONAL & LOCAL (Static for now) -->
+                            <!-- Dunyo va mahalliy (Static) -->
                             {% for tab_id in "34" %}
                             <div class="tab-pane fade" id="nav-{{ tab_id }}" role="tabpanel">
                                 <div class="row">
@@ -186,7 +186,7 @@
         </div>
     </div>
 
-    <!-- ##### News Area Start (3x3 Format + Load More) ##### -->
+    <!-- ##### Yangiliklar maydoni Start (3x3 Format "ko'proq") ##### -->
     <div class="news-area section-padding-100-70">
         <div class="container">
             <div class="row">
